@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "outputDirectory": ".next",
+  "regions": ["sin1"],
+  "env": {
+    "NEXT_PUBLIC_APP_URL": "https://vibecanvas.vercel.app",
+    "ARCHITECT_MODEL": "qwen-plus",
+    "ARCHITECT_API_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+    "CODER_MODEL": "qwen-plus",
+    "CODER_API_URL": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
+  }
+}
