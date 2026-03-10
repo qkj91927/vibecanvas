@@ -71,8 +71,17 @@ Return ONLY the RAW single-file index.html string. No markdown code blocks, no e
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>{{ blueprint.meta.title }}</title>
+  
+  <!-- External Dependencies (MUST load before vibe-engine.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.0.0/dist/pixi.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
+  
+  <!-- WeChat Bridge & VibeEngine -->
   <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
   <script src="/vibe-engine.js"></script>
+  
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { 
