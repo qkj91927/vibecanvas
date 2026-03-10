@@ -16,6 +16,10 @@ const CODER_API_URL = process.env.CODER_API_URL || 'https://api.deepseek.com/v1/
 const BUILDER_SYSTEM_PROMPT = `# Role
 You are the VibeCanvas Lead Developer. You MUST use the window.Vibe SDK pre-injected into the sandbox.
 
+# CRITICAL: Vibe.init() is ASYNC
+**You MUST use \`await Vibe.init({...})\` in your main() function!**
+The engine will not work if you forget the await. Canvas will be blank.
+
 # Tech Constraints
 1. **Vibe Engine SDK ONLY**: Do not instantiate raw PixiJS or THREE applications. Rely on the SDK functions provided.
 2. **Mobile First**: Touch events taking precedence over mouse events.
@@ -110,8 +114,8 @@ Return ONLY the RAW single-file index.html string. No markdown code blocks, no e
 
     // Main app logic here
     async function main() {
-      // Initialize Vibe Engine
-      Vibe.init({ 
+      // Initialize Vibe Engine (MUST await!)
+      await Vibe.init({ 
         mode: '{{ blueprint.meta.view_mode }}',
         bgColor: '{{ blueprint.visual_spec.background }}'
       });

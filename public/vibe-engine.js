@@ -26,15 +26,16 @@
     /**
      * Initialize VibeEngine
      * @param {Object} config - { mode: '2d'|'3d', bgColor: string }
+     * @returns {Promise<void>}
      */
-    init: function(config) {
+    init: async function(config) {
       this._mode = config.mode || '2d';
       const bgColor = config.bgColor || '#000000';
 
       if (this._mode === '2d') {
-        this._init2D(bgColor);
+        await this._init2D(bgColor);
       } else if (this._mode === '3d') {
-        this._init3D(bgColor);
+        await this._init3D(bgColor);
       }
 
       // Set up touch event handling
@@ -43,23 +44,23 @@
       console.log(`[VibeEngine] Initialized in ${this._mode} mode`);
     },
 
-    _init2D: function(bgColor) {
+    _init2D: async function(bgColor) {
       const app = new PIXI.Application();
-      app.init({
+      await app.init({
         width: window.innerWidth,
         height: window.innerHeight,
         backgroundColor: bgColor,
         antialias: true,
         resolution: window.devicePixelRatio || 1,
         autoDensity: true
-      }).then(() => {
-        document.body.appendChild(app.canvas);
-        this._pixiApp = app;
-        
-        // Handle resize
-        window.addEventListener('resize', () => {
-          app.renderer.resize(window.innerWidth, window.innerHeight);
-        });
+      });
+      
+      document.body.appendChild(app.canvas);
+      this._pixiApp = app;
+      
+      // Handle resize
+      window.addEventListener('resize', () => {
+        app.renderer.resize(window.innerWidth, window.innerHeight);
       });
     },
 
