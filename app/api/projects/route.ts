@@ -4,6 +4,13 @@ import { VibeBlueprint } from '@/types/vibeblueprint';
 
 export async function POST(request: NextRequest) {
   try {
+    if (!supabaseAdmin) {
+      return NextResponse.json(
+        { error: 'Database not configured. Please set Supabase environment variables.' },
+        { status: 503 }
+      );
+    }
+
     const body = await request.json();
     const { user_id, blueprint, code_artifact, parent_id } = body;
 
@@ -46,6 +53,13 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    if (!supabaseAdmin) {
+      return NextResponse.json(
+        { error: 'Database not configured. Please set Supabase environment variables.' },
+        { status: 503 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const user_id = searchParams.get('user_id');
     const limit = parseInt(searchParams.get('limit') || '20');

@@ -6,6 +6,13 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!supabaseAdmin) {
+      return NextResponse.json(
+        { error: 'Database not configured. Please set Supabase environment variables.' },
+        { status: 503 }
+      );
+    }
+
     const { id } = await params;
     const { data, error } = await supabaseAdmin
       .from('projects')
