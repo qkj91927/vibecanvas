@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { translateVibeToBlueprint } from '@/lib/ai/translator';
-import { generateCode } from '@/lib/ai/coder';
+// Import removed - using API routes instead
 import PreviewSandbox from '@/components/PreviewSandbox';
 import { VibeBlueprint } from '@/types/vibeblueprint';
 
@@ -27,7 +26,18 @@ export default function CreatePage() {
     try {
       // Step 1: Architect Agent - Translate vibe to blueprint
       console.log('[Create] Calling Architect Agent...');
-      const architectResult = await translateVibeToBlueprint(vibe);
+      const architectResponse = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ vibe_description: vibe })
+      });
+
+      if (!architectResponse.ok) {
+        const errorData = await architectResponse.json();
+        throw new Error(`Architect API error: ${architectResponse.status} ${JSON.stringify(errorData)}`);
+      }
+
+      const architectResult = await architectResponse.json();
 
       if (!architectResult.success || !architectResult.blueprint) {
         throw new Error(architectResult.error || 'Architect failed');
@@ -46,7 +56,18 @@ export default function CreatePage() {
 
       // Step 2: Builder Agent - Generate code from blueprint
       console.log('[Create] Calling Builder Agent...');
-      const builderResult = await generateCode(architectResult.blueprint);
+      const builderResponse = await fetch('/api/code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ blueprint: architectResult.blueprint })
+      });
+
+      if (!builderResponse.ok) {
+        const errorData = await builderResponse.json();
+        throw new Error(`Builder API error: ${builderResponse.status} ${JSON.stringify(errorData)}`);
+      }
+
+      const builderResult = await builderResponse.json();
 
       if (!builderResult.success || !builderResult.code) {
         throw new Error(builderResult.error || 'Builder failed');
